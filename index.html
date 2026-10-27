@@ -36,11 +36,22 @@ textarea{width:100%;height:160px;font:inherit;font-size:13px;background:#fbf6ec;
 <div id="panel" class="panel"></div>
 <div id="fade"></div>
 <div id="start" class="panel">
-<h2>基督山：未寄出的复仇</h2><div class="sub">一封迟了十四年的信</div>
-<p>五个房间，五封未完的信。走近发光之物，按 E 或点击查看。</p>
-<p style="font-size:13px;color:#7a5a40">电脑：WASD 走动，点击画面锁定视角（Esc 解锁）或按住拖拽。<br>手机：左下摇杆走动，右侧拖拽看；也可直接点物件自动走近。</p>
-<button class="opt" id="go">— 推开第一扇门 —</button>
+<h2 id="st-title">载入中……</h2><div class="sub" id="st-sub"></div>
+<div id="st-body"></div>
+<button class="opt" id="go" style="display:none"></button>
 </div>
 <script src="js/three.min.js"></script>
-<script src="js/game.js"></script>
+<script>
+/* ?story=<slug> → stories/<slug>/story.js（设置 window.__STORY__）→ js/engine.js */
+(function(){
+ var m=/[?&]story=([\w-]+)/.exec(location.search),slug=m?m[1]:'monte-cristo';
+ function load(src,ok,fail){var s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=fail;document.body.appendChild(s)}
+ function fail(msg){document.getElementById('st-title').textContent='无法载入剧本';
+  document.getElementById('st-body').innerHTML='<p>'+msg+'</p><p style="font-size:13px;color:#7a5a40">请用本地静态服务器打开（如 <code>python3 -m http.server</code>），并确认 stories/ 下有该文件夹。<br><a href="?story=monte-cristo">回到默认书</a></p>'}
+ load('stories/'+slug+'/story.js',function(){
+  if(!window.__STORY__)return fail('stories/'+slug+'/story.js 没有设置 window.__STORY__。');
+  load('js/engine.js',null,function(){fail('js/engine.js 载入失败。')});
+ },function(){fail('找不到 stories/'+slug+'/story.js')});
+})();
+</script>
 </body></html>
