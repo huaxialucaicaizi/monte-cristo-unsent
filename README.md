@@ -11,6 +11,7 @@ GitHub Pages（从仓库根目录发布）：
 - 默认书（基督山，五幕）：`https://huaxialucaicaizi.github.io/monte-cristo-unsent/`
 - 指定书：`https://huaxialucaicaizi.github.io/monte-cristo-unsent/?story=monte-cristo`
 - 傲慢与偏见（精简两幕）：`…/?story=pride-and-prejudice`
+- 红楼梦（精简三幕，几乎不写信）：`…/?story=dream-of-red-chamber`
 - 空书骨架（一幕）：`…/?story=_skeleton`
 
 ## 目录
@@ -23,6 +24,7 @@ js/
 stories/
   monte-cristo/story.js          《基督山：未寄出的复仇》完整五幕（默认书）
   pride-and-prejudice/story.js   《傲慢与偏见：一封迟到的信》两幕示例（虚构改编）
+  dream-of-red-chamber/story.js  《红楼梦：一夜未写的诗》三幕示例（无蜡封，虚构改编）
   _skeleton/story.js             空书骨架：一幕占位 + 全部字段注释
 LICENSE  .nojekyll
 ```
