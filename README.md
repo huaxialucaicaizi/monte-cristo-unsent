@@ -11,6 +11,7 @@ GitHub Pages（从仓库根目录发布）：
 - 默认书（基督山，五幕）：`https://huaxialucaicaizi.github.io/monte-cristo-unsent/`
 - 指定书：`https://huaxialucaicaizi.github.io/monte-cristo-unsent/?story=monte-cristo`
 - 傲慢与偏见（精简两幕）：`…/?story=pride-and-prejudice`
+- 红楼梦（七幕导读，按原著关键剧情）：`…/?story=dream-of-red-chamber`
 - 空书骨架（一幕）：`…/?story=_skeleton`
 
 ## 目录
@@ -23,6 +24,7 @@ js/
 stories/
   monte-cristo/story.js          《基督山：未寄出的复仇》完整五幕（默认书）
   pride-and-prejudice/story.js   《傲慢与偏见：一封迟到的信》两幕示例（虚构改编）
+  dream-of-red-chamber/story.js  《红楼梦：七幕导读》七幕示例（虚构改编，无蜡封信）
   _skeleton/story.js             空书骨架：一幕占位 + 全部字段注释
 LICENSE  .nojekyll
 ```
@@ -95,6 +97,20 @@ python3 -m http.server 8000
 5. 死信柜室：信首回响你写下的痛句，选寄出或锁柜（锁柜要再点蜡封确认），最后生成可复制的版本目录。
 
 复仇路线的弹窗为墨黑，和解路线为羊皮暖光。
+
+## 红楼梦·七幕导读（`?story=dream-of-red-chamber`）
+
+据原著关键剧情虚构改编，几乎不写信、不用蜡封。分支只改立场与文风，悲剧终局不变。
+
+1. 荣国府·进府（`name` + `toggle`）：唤通灵玉为「宝玉」或「顽石」，再在两种读法间切换。
+2. 梨香院（`choice`）：金玉良缘（`route:'jinyu'`，墨黑冷调）或木石前盟（`route:'mushi'`，暖泪调）。
+3. 大观园·共读（`diary`，`painKey:'heart'`）：三选一一句心迹，存为 `{heart}`，再选藏书入袖 / 埋书花下。
+4. 花冢·葬花（选项带 `wall`）：点掉墙上「花谢 飘零 葬花 泪」。
+5. 抄检大观园（`choice`）：`room` / `props` 为 `function(S)`，金玉路线雾更冷、烛更暗；选项 `set.frost` 影响下一幕。
+6. 潇湘馆·焚稿（`choice`）：焚稿或留稿；园子散得越深，烛越暗。
+7. 雪夜·出家意（`dead-letter`）：信首回响 `{heart}`，收束进版本目录。
+
+每幕有黑场题记（`fade`）、墙上章名（`text` 物件）和一个发光可点的主物件。
 
 ## 作者
 
