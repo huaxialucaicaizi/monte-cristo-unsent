@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>基督山：未寄出的复仇 · 3D</title>
+<style>
+html,body{margin:0;height:100%;overflow:hidden;background:#120a06;font-family:"Songti SC","Noto Serif SC","STSong",serif;color:#2B1810;touch-action:none;-webkit-user-select:none;user-select:none}
+canvas{display:block}
+#vig{position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 45%,rgba(10,5,2,.75) 100%)}
+#fade{position:fixed;inset:0;background:#0b0604;opacity:0;pointer-events:none;transition:opacity .8s;display:flex;align-items:center;justify-content:center;color:#F4ECDF;font-size:22px;letter-spacing:.3em}
+#fade.on{opacity:1}
+#hud{position:fixed;top:12px;left:14px;color:#e9dcc4;font-size:13px;letter-spacing:.15em;opacity:.85;pointer-events:none;text-shadow:0 1px 3px #000}
+#hint{position:fixed;bottom:22%;left:50%;transform:translateX(-50%);color:#F4ECDF;background:rgba(43,24,16,.7);padding:6px 14px;border:1px solid rgba(244,236,223,.3);font-size:14px;display:none;pointer-events:none}
+#cross{position:fixed;left:50%;top:50%;width:6px;height:6px;margin:-3px;border-radius:50%;background:rgba(244,236,223,.6);pointer-events:none}
+.panel{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:min(88vw,460px);max-height:82vh;overflow:auto;background:rgba(244,236,223,.95);border:1px solid #8a6a4a;box-shadow:0 20px 60px rgba(0,0,0,.6),inset 0 0 40px rgba(120,80,40,.18);padding:26px 24px;display:none;line-height:1.85;font-size:15px}
+.panel h2{margin:0 0 6px;font-size:20px;color:#4A0E1F;letter-spacing:.12em}
+.panel .sub{font-size:12px;color:#7a5a40;letter-spacing:.2em;margin-bottom:12px}
+.panel p{margin:.5em 0}
+.opt{display:block;width:100%;text-align:left;margin:8px 0;padding:9px 12px;background:transparent;border:none;border-bottom:1px solid #b8a080;font:inherit;color:#2B1810;cursor:pointer}
+.opt:hover,.opt:active{background:rgba(74,14,31,.08);color:#4A0E1F}
+.seal{width:80px;height:80px;border-radius:50%;margin:14px auto;background:radial-gradient(circle at 35% 35%,#8a2a3a,#4A0E1F 70%);box-shadow:0 4px 10px rgba(0,0,0,.4),inset 0 -4px 8px rgba(0,0,0,.4);cursor:pointer;display:flex;align-items:center;justify-content:center;color:#e8c9a0;font-size:26px;transition:transform .15s}
+.seal:active{transform:scale(.92)}
+.crack{opacity:.4}
+.word{display:inline-block;margin:4px;padding:2px 6px;cursor:pointer;color:#4A0E1F;font-weight:bold}
+.word.x{text-decoration:line-through;color:#a08870;font-weight:normal}
+.toggle{font-size:12px;border:1px solid #8a6a4a;background:none;padding:3px 10px;cursor:pointer;font:inherit;color:#4A0E1F}
+.dark{background:rgba(20,14,12,.95)!important;color:#ddd0bc!important}
+.dark h2{color:#c9a46a!important}.dark .opt{color:#ddd0bc;border-color:#555}
+#joy{position:fixed;left:24px;bottom:28px;width:110px;height:110px;border-radius:50%;border:1px solid rgba(244,236,223,.35);background:rgba(43,24,16,.25);display:none}
+#knob{position:absolute;left:35px;top:35px;width:40px;height:40px;border-radius:50%;background:rgba(244,236,223,.5)}
+#start{display:block}
+textarea{width:100%;height:160px;font:inherit;font-size:13px;background:#fbf6ec;border:1px solid #b8a080}
+</style></head><body>
+<div id="vig"></div><div id="cross"></div>
+<div id="hud"></div><div id="hint"></div>
+<div id="joy"><div id="knob"></div></div>
+<div id="panel" class="panel"></div>
+<div id="fade"></div>
+<div id="start" class="panel">
+<h2>基督山：未寄出的复仇</h2><div class="sub">一封迟了十四年的信</div>
+<p>五个房间，五封未完的信。走近发光之物，按 E 或点击查看。</p>
+<p style="font-size:13px;color:#7a5a40">电脑：WASD 走动，点击画面锁定视角（Esc 解锁）或按住拖拽。<br>手机：左下摇杆走动，右侧拖拽看；也可直接点物件自动走近。</p>
+<button class="opt" id="go">— 推开第一扇门 —</button>
+</div>
+<script src="js/three.min.js"></script>
+<script src="js/game.js"></script>
+</body></html>
