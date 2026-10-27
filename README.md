@@ -1,4 +1,4 @@
-# 基督山：未寄出的复仇 · 可换书 3D 互动小说模板
+# 基督山：未寄出的复仇 · 可换书3D互动小说模版
 
 副题：一封迟了十四年的信
 
@@ -14,6 +14,24 @@ GitHub Pages（从仓库根目录发布）：
 - 红楼梦（七幕导读，按原著关键剧情）：`…/?story=dream-of-red-chamber`
 - 空书骨架（一幕）：`…/?story=_skeleton`
 
+## 案例画面
+
+《基督山：未寄出的复仇》（默认书）
+
+![基督山·第一幕马赛夜室：桌上烛光与带蜡封的告密信](screenshots/monte-cristo-act1-marseille.png)
+*第一幕 · 马赛夜室：走近桌上发光的信。*
+
+![基督山·第一幕：拆开蜡封后的告密信与三个选项](screenshots/monte-cristo-act1-letter.png)
+*拆开蜡封后读信，三选一：对质 / 烧信 / 交给第三人。*
+
+《红楼梦：七幕导读》（`?story=dream-of-red-chamber`）
+
+![红楼梦·第一幕荣国府：供桌上的通灵玉与墙上章名](screenshots/dream-of-red-chamber-act1-rongguo.png)
+*第一幕 · 荣国府·进府：供桌上的通灵玉。*
+
+![红楼梦·第七幕雪夜：白雪中的门框与红色锦盒](screenshots/dream-of-red-chamber-act7-snow.png)
+*第七幕 · 雪夜·出家意：全书收束，进入版本目录。*
+
 ## 目录
 
 ```
@@ -26,6 +44,8 @@ stories/
   pride-and-prejudice/story.js   《傲慢与偏见：一封迟到的信》两幕示例（虚构改编）
   dream-of-red-chamber/story.js  《红楼梦：七幕导读》七幕示例（虚构改编，无蜡封信）
   _skeleton/story.js             空书骨架：一幕占位 + 全部字段注释
+screenshots/                     README 案例画面
+.cursor/skills/swappable-book-3d-if-template/SKILL.md   Agent Skill「可换书3D互动小说模版」
 LICENSE  .nojekyll
 ```
 
