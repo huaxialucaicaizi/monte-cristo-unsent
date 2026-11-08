@@ -1,5 +1,5 @@
 /*
- * 《红楼梦：七幕导读》· 据曹雪芹原著关键剧情虚构改编（字段说明见 stories/_skeleton/story.js）
+ * 《红楼梦》公版文本互动改编
  * 七幕：进府 → 梨香院 → 共读 → 葬花 → 抄检 → 焚稿 → 雪夜。分支只改立场与文风，悲剧终局不变。
  * 心迹 {heart}：第三幕 diary 用 painKey:'heart' 存入（引擎默认存 {pain}，这里换了键名）。
  * 路线 route：'jinyu' 金玉（墨黑冷调，darkRoute）/ 'mushi' 木石（暖泪调）；第五幕 set.frost 让后两幕更冷更暗。

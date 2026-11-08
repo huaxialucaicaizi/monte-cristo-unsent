@@ -1,5 +1,6 @@
 import { transform } from "esbuild";
 import { parse } from "acorn";
+import OpenCC from "opencc-js";
 import { execFileSync } from "node:child_process";
 import { cp, mkdir, readFile, readdir, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
@@ -13,6 +14,58 @@ const jsFiles = [
   "js/engine.js",
   "js/boot.js",
 ];
+const toSimplified = OpenCC.Converter({ from: "tw", to: "cn" });
+
+function normalizeCopy(source, config) {
+  const acts = Object.fromEntries(source.acts.map((act) => [act.id, act]));
+  const runtimeAct = (id, number, fade) => {
+    const act = acts[id];
+    return {
+      hud: `第${number}幕 · ${act.title}`,
+      fade,
+      label: act.objectLabel,
+      title: act.title,
+      sub: "",
+      text: `<p>${act.intro}</p>`,
+      choices: act.options.map((option) => option.text),
+    };
+  };
+  const endings = source.endings.map((ending) => ({
+    combination: ending.combination,
+    title: ending.title,
+    description: ending.description,
+    quote: toSimplified(ending.quote.text),
+  }));
+  return {
+    title: "红楼梦 · 三幕",
+    pageTitle: "红楼梦 · 三幕",
+    hook: `${source.hook}<br><small>${source.perspective}</small>`,
+    startSub: "三幕 · 三个选择 · 三分钟",
+    startButton: "走进荣国府",
+    act1: runtimeAct("rongguo", "一", "一块石头，落进红尘"),
+    act2: { hud: "完整版 · 梨香院", fade: "金锁微响，竹影一摇", label: "錾字金锁", title: "金与木", sub: "", text: "<p>金锁上的字恰与玉上的字成对。你选择怎样读这一段缘分？</p>", choices: ["信金玉良缘", "信木石前盟"] },
+    act3: { hud: "完整版 · 大观园共读", fade: "春日 · 沁芳闸下", label: "落花下的书", title: "共读", sub: "", text: "<p>桃花底下，两个人偷读闲书。你要留下哪一种读法？</p>", choices: ["把书藏进袖中", "把书埋回花下"] },
+    act4: runtimeAct("flower-tomb", "二", "落花满地，无人收拾"),
+    act5: { hud: "完整版 · 抄检大观园", fade: "秋夜 · 灯笼一盏盏亮起", label: "被翻开的箱笼", title: "抄检", sub: "", text: "<p>箱笼被翻开，所有人的私物摊在灯下。</p>", choices: ["挡在箱笼前替她们求情", "默然看着"] },
+    act6: { hud: "完整版 · 潇湘馆焚稿", fade: "竹影疏 · 药香冷", label: "一叠诗稿", title: "焚稿", sub: "", text: "<p>她把诗稿一页页递向火盆。</p>", choices: ["让诗稿随旧帕一起成灰", "悄悄留下最后一页"] },
+    act7: runtimeAct("snow", "三", "雪落无声 · 石归来处"),
+    versionTitles: endings.map((ending) => ending.title),
+    endingDescriptions: endings.map((ending) => ending.description),
+    quotes: endings.map((ending) => ending.quote),
+    combinations: endings.map((ending) => ending.combination),
+    attribution: source.credit,
+    author: config.author,
+    cardLabels: source.acts.map((act) => act.title),
+    resultTitle: source.endingCardLabel,
+    shareButton: "带结局卡发笔记",
+    restartButton: "再走一次",
+    noteTitles: source.postNote.titles,
+    noteBody: source.postNote.bodyTemplate,
+    shareUnavailable: "请在小红书 App 的小工具中发布",
+    shareFailed: "发布页暂时无法打开，请稍后再试",
+    fullEntry: "进入七幕完整版",
+  };
+}
 
 await rm(dist, { recursive: true, force: true });
 await mkdir(path.join(dist, "css"), { recursive: true });
@@ -25,7 +78,9 @@ await cp(path.join(root, "css/app.css"), path.join(dist, "css/app.css"));
 for (const relative of jsFiles) {
   let source = await readFile(path.join(root, relative), "utf8");
   if (relative === "stories/dream-of-red-chamber/story.js") {
-    const copy = JSON.parse(await readFile(path.join(root, "copy.json"), "utf8"));
+    const formalCopy = JSON.parse(await readFile(path.join(root, "copy.json"), "utf8"));
+    const config = JSON.parse(await readFile(path.join(root, "config.json"), "utf8"));
+    const copy = normalizeCopy(formalCopy, config);
     source = source.replace("__COPY_JSON__", JSON.stringify(copy));
   }
   const result = await transform(source, {

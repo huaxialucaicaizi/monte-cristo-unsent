@@ -86,6 +86,23 @@ const titles = await page.evaluate(() => {
   return result;
 });
 if (new Set(titles).size !== 8) issues.push("the 8 choice combinations do not map to 8 unique titles");
+const copyData = await page.evaluate(() => ({
+  combinations: window.__GAME__.story.copy.combinations,
+  quotes: window.__GAME__.story.copy.quotes,
+}));
+const expectedCombinations = ["AAA", "AAB", "ABA", "ABB", "BAA", "BAB", "BBA", "BBB"];
+const expectedQuotes = [
+  "花开易见落难寻，阶前闷杀葬花人，",
+  "未若锦囊收艳骨，一抔净土掩风流。",
+  "花魂鸟魂总难留，鸟自无言花自羞。",
+  "满纸荒唐言，一把辛酸泪！",
+  "侬今葬花人笑痴，他年葬侬知是谁？",
+  "此系身前身后事，倩谁寄去作神传？",
+  "无材可与补苍天，枉入红尘若许年！",
+  "都云作者痴，谁解其中味？",
+];
+if (JSON.stringify(copyData.combinations) !== JSON.stringify(expectedCombinations)) issues.push("ending combination order mismatch");
+if (JSON.stringify(copyData.quotes) !== JSON.stringify(expectedQuotes)) issues.push("simplified quote conversion mismatch");
 
 await page.click("#post-note");
 await page.waitForFunction(() => window.__PLATFORM_CALLS__.postNote.length === 1);
@@ -93,6 +110,8 @@ const calls = await page.evaluate(() => window.__PLATFORM_CALLS__);
 const note = calls.postNote[0];
 if (note.pageType !== "photo_publish" || !note.mediaInfo.image_resources[0].url.startsWith("data:image/png")) issues.push("postNote media parameters are invalid");
 if (!note.content.includes("#小红书小工具")) issues.push("postNote content misses required topic");
+if ([...note.title].length > 20 || [...note.content].length > 1000) issues.push("postNote copy exceeds platform limits");
+if (/\{(?:choice|ending)/.test(note.content)) issues.push("postNote contains unresolved template fields");
 if (!calls.storage.some((call) => call[0] === "setStorage")) issues.push("platform Storage API was not used");
 
 await browser.close();

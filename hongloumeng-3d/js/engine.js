@@ -184,7 +184,7 @@ function makeResultCard(){
  x.strokeStyle='rgba(74,14,31,.42)';x.lineWidth=3;x.strokeRect(58,58,964,1324);
  x.textAlign='center';x.fillStyle='#4a0e1f';x.font='54px serif';x.fillText(copy.title||ST.title,540,155);
  x.font='30px serif';x.fillStyle='#75564b';x.fillText(copy.resultTitle||'你的版本',540,235);
- var title=(copy.versionTitles||[])[versionIndex()]||ST.title;
+ var index=versionIndex(),title=(copy.versionTitles||[])[index]||ST.title;
  x.font='bold 74px serif';x.fillStyle='#4a0e1f';wrapText(x,title,540,345,870,88);
  x.textAlign='left';x.font='32px serif';x.fillStyle='#4b3028';
  var labels=copy.cardLabels||[],choices=S.keyChoices;
@@ -192,10 +192,17 @@ function makeResultCard(){
   var yy=550+i*170;x.fillStyle='#8c2f34';x.font='26px serif';x.fillText('0'+(i+1)+'  '+(labels[i]||''),120,yy);
   x.fillStyle='#37231f';x.font='34px serif';wrapText(x,choices[i]||'—',120,yy+58,840,46);
  }
- x.textAlign='center';x.fillStyle='#4a0e1f';x.font='italic 34px serif';wrapText(x,copy.quote||'',540,1120,820,50);
+ x.textAlign='center';x.fillStyle='#4a0e1f';x.font='italic 34px serif';wrapText(x,(copy.quotes||[])[index]||'',540,1120,820,50);
  x.font='24px serif';x.fillStyle='#6e5147';x.fillText(copy.attribution||'',540,1280);
  x.textAlign='right';x.font='24px sans-serif';x.fillText(copy.author||'',960,1350);
- return {canvas:cv,dataUrl:cv.toDataURL('image/png'),title:title};
+ return {canvas:cv,dataUrl:cv.toDataURL('image/png'),title:title,index:index};
+}
+function noteContent(copy,card){
+ var values={
+  choice1:S.keyChoices[0]||'',choice2:S.keyChoices[1]||'',choice3:S.keyChoices[2]||'',
+  endingTitle:card.title,endingDescription:(copy.endingDescriptions||[])[card.index]||''
+ };
+ return String(copy.noteBody||'').replace(/\{(\w+)\}/g,function(match,key){return values[key]==null?match:values[key]});
 }
 function catalog(){
  var C=ST.catalog||{},copy=ST.copy||{},card=makeResultCard();
@@ -209,8 +216,8 @@ function catalog(){
   var mini=window.xhs&&window.xhs.miniTool,status=$('share-status');
   if(!mini||typeof mini.postNote!=='function'){status.textContent=copy.shareUnavailable||'';return}
   this.disabled=true;status.textContent='';
-  var content=String(copy.noteBody||'').replace('{title}',card.title);
-  mini.postNote({title:copy.noteTitle||card.title,content:content,pageType:'photo_publish',
+  var content=noteContent(copy,card),titles=copy.noteTitles||[];
+  mini.postNote({title:titles[card.index%titles.length]||card.title,content:content,pageType:'photo_publish',
    mediaInfo:{image_resources:[{url:card.dataUrl}]}})
    .catch(function(){status.textContent=copy.shareFailed||''})
    .then(function(){$('post-note').disabled=false});

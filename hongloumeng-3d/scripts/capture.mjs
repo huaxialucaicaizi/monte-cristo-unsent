@@ -5,8 +5,10 @@ import path from "node:path";
 
 const root = path.resolve(import.meta.dirname, "..");
 const artifacts = "/opt/cursor/artifacts";
+const processAssets = path.join(root, "docs/process");
 const frames = "/tmp/red-chamber-screencast";
 await mkdir(artifacts, { recursive: true });
+await mkdir(processAssets, { recursive: true });
 await rm(frames, { recursive: true, force: true });
 await mkdir(frames, { recursive: true });
 
@@ -38,7 +40,9 @@ await page.evaluate(() => window.__GAME__.hotspots()[0].userData.fn());
 await page.locator("#panel .opt").first().click();
 await page.waitForSelector("#result-card");
 const cardData = await page.getAttribute("#result-card", "src");
-await writeFile(path.join(artifacts, "红楼梦3D-结局卡-1080x1440.png"), Buffer.from(cardData.split(",")[1], "base64"));
+const cardBuffer = Buffer.from(cardData.split(",")[1], "base64");
+await writeFile(path.join(artifacts, "红楼梦3D-结局卡-1080x1440.png"), cardBuffer);
+await writeFile(path.join(processAssets, "结局卡-正式文案-1080x1440.png"), cardBuffer);
 
 const before = (await readFile(path.join(artifacts, "红楼梦3D-改造前原版.png"))).toString("base64");
 const after = (await readFile(path.join(artifacts, "红楼梦3D-最终版首屏.png"))).toString("base64");
